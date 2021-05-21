@@ -1,0 +1,224 @@
+﻿@model List<DadoViewModel>
+@{ Layout = "_Layout";}
+
+@foreach (DadoViewModel dado in Model)
+{
+<div class="divCustomizada">
+    <label class="idDoCurriculo">ID: @dado.Curriculo.Id</label> &nbsp; &nbsp; <a href="/Curriculo/Editar?id=@dado.Curriculo.Id">Editar</a> &nbsp; &nbsp;
+    <a href="javascript:apagarDado(@dado.Curriculo.Id)">Deletar</a>
+    <br />
+    <br />
+    <div class="text-center">
+        <h1>@dado.Curriculo.Nome</h1>
+    </div>
+    <hr />
+    <label class="informacoes">
+        @dado.Curriculo.Idade anos | @dado.Endereco.Cidade - @dado.Endereco.Estado, @dado.Endereco.Bairro, @dado.Endereco.Rua |
+        @dado.Endereco.Cep | @dado.Curriculo.Telefone | @dado.Curriculo.Email | @dado.Curriculo.Cpf
+    </label>
+    <br />
+    <br />
+    <br />
+    <h3 class="h3Curriculo">Objetivo</h3>
+    <ul style="list-style-type:disc" class="h3Curriculo">
+        <li class="espacamento"><label class="letra">Atuar na área de @dado.Curriculo.Area. </label> </li>
+        <li class="espacamento"><label class="letra">@dado.Curriculo.Cargo. </label></li>
+    </ul>
+    <br />
+
+    <h3 class="h3Curriculo">Formação acadêmica</h3>
+
+    @if (dado.PosGraduacao.Instituicao != "NULL" && dado.PosGraduacao.Curso != "NULL")
+    {
+        <ul style="list-style-type:disc" class="h3Curriculo">
+            <li class="espacamento">
+                <label class="letra"><b>  @dado.PosGraduacao.Instituicao</b> </label> <br />
+                <label class="letra">
+                    @dado.PosGraduacao.Tipo em @dado.PosGraduacao.Curso | Início: @dado.PosGraduacao.Inicio.Month/@dado.PosGraduacao.Inicio.Year |
+                    Conclusão: @dado.PosGraduacao.Conclusao.Month/@dado.PosGraduacao.Conclusao.Year |
+                    @if (dado.PosGraduacao.Conclusao > DateTime.Now)
+                    {
+
+                        <label class="letra"> Turno: @dado.PosGraduacao.Turno | </label>
+                    }
+                    @if (dado.PosGraduacao.Periodo != 0)
+                    {
+                        <label class="letra"> Cursando: @dado.PosGraduacao.Periodo º período | </label>
+                    }
+
+                    @dado.PosGraduacao.Cidade - @dado.PosGraduacao.Uf
+
+                </label>
+            </li>
+        </ul>
+    }
+
+    @if (dado.Graduacao.Instituicao != "NULL" && dado.Graduacao.Curso != "NULL") // Se a pessoa fez ou faz faculdade
+    {
+        <ul style="list-style-type:disc" class="h3Curriculo">
+            <li class="espacamento">
+                <label class="letra"><b>  @dado.Graduacao.Instituicao</b> </label> <br />
+                <label class="letra">
+                    @dado.Graduacao.Tipo em @dado.Graduacao.Curso | Início: @dado.Graduacao.Inicio.Month/@dado.Graduacao.Inicio.Year |
+                    Conclusão: @dado.Graduacao.Conclusao.Month/@dado.Graduacao.Conclusao.Year |
+                    @if (dado.Graduacao.Conclusao > DateTime.Now) // Se a pessoa ainda não se formou, ela procura um estágio ou algo parecido. A empresa quer saber quando ela estuda.
+                    {
+
+                        <label class="letra"> Turno: @dado.Graduacao.Turno | </label>
+                    }
+                    @if (dado.Graduacao.Periodo != 0) // Colocar o período como zero significa que se formou. Se é diferente de zero, ainda não se formou. A empresa quer saber qual é o semestre.
+                    {
+                        <label class="letra"> Cursando: @dado.Graduacao.Periodo º período | </label>
+                    }
+
+                    @dado.Graduacao.Cidade - @dado.Graduacao.Uf
+
+                </label>
+            </li>
+        </ul>
+    }
+
+    @if (dado.Tecnico.Instituicao != "NULL" && dado.Tecnico.Curso != "NULL")
+    {
+        <ul style="list-style-type:disc" class="h3Curriculo">
+            <li class="espacamento">
+                <label class="letra"><b>  @dado.Tecnico.Instituicao</b> </label> <br />
+                <label class="letra">
+                    @dado.Tecnico.Curso | Início: @dado.Tecnico.Inicio.Month/@dado.Tecnico.Inicio.Year |
+                    Conclusão: @dado.Tecnico.Conclusao.Month/@dado.Tecnico.Conclusao.Year |
+                    @if (dado.Tecnico.Conclusao > DateTime.Now)
+                    {
+
+                        <label class="letra"> Turno: @dado.Tecnico.Turno | </label>
+                    }
+                    @if (dado.Tecnico.Periodo != 0)
+                    {
+                        <label class="letra"> Cursando: @dado.Tecnico.Periodo º período | </label>
+                    }
+
+                    @dado.Tecnico.Cidade - @dado.Tecnico.Uf
+
+                </label>
+            </li>
+        </ul>
+    }
+
+    @if (dado.Experiencia.NomeDaEmpresa != "NULL" && dado.Experiencia.Cargo != "NULL")
+    {
+        <h3 class="h3Curriculo">Experiência</h3>
+        <ul style="list-style-type:disc" class="h3Curriculo">
+            <li class="espacamento">
+                <label class="letra"><b>  @dado.Experiencia.NomeDaEmpresa</b> </label> <br />
+                <label class="letra">
+                    @dado.Experiencia.Cargo | Início: @dado.Experiencia.Inicio.Month/@dado.Experiencia.Inicio.Year
+                    | Fim: @dado.Experiencia.Fim.Month/@dado.Experiencia.Fim.Year
+                </label>
+            </li>
+        </ul>
+    }
+
+    @if (dado.Idioma1.Idioma != "NULL" || dado.Idioma2.Idioma != "NULL" || dado.Idioma3.Idioma != "NULL")
+    {
+        <h3 class="h3Curriculo">Idioma</h3>
+        if (dado.Idioma1.Idioma != "NULL" && dado.Idioma1.IdNivel != 0)
+        {
+            <ul style="list-style-type:disc" class="h3Curriculo">
+                <li class="espacamento">
+                    <label class="letra"><b>  @dado.Idioma1.Idioma: </b> </label>
+                    <label class="letra">
+                        @switch (dado.Idioma1.IdNivel)
+                        {
+                            case 1:
+                                <label class="letra"> Básico </label>
+                                break;
+
+                            case 2:
+                                <label class="letra"> Intermediário </label>
+                                break;
+
+                            case 3:
+                                <label class="letra"> Avançado </label>
+                                break;
+
+                            case 4:
+                                <label class="letra"> Fluente </label>
+                                break;
+                        }
+                    </label>
+                </li>
+            </ul>
+        }
+
+        if (dado.Idioma2.Idioma != "NULL" && dado.Idioma2.IdNivel != 0)
+        {
+            <ul style="list-style-type:disc" class="h3Curriculo">
+                <li class="espacamento">
+                    <label class="letra"><b>  @dado.Idioma2.Idioma: </b> </label>
+                    <label class="letra">
+                        @switch (dado.Idioma2.IdNivel)
+                        {
+                            case 1:
+                                <label class="letra"> Básico </label>
+                                break;
+
+                            case 2:
+                                <label class="letra"> Intermediário </label>
+                                break;
+
+                            case 3:
+                                <label class="letra"> Avançado </label>
+                                break;
+
+                            case 4:
+                                <label class="letra"> Fluente </label>
+                                break;
+                        }
+                    </label>
+                </li>
+            </ul>
+        }
+
+        if (dado.Idioma3.Idioma != "NULL" && dado.Idioma3.IdNivel != 0)
+        {
+            <ul style="list-style-type:disc" class="h3Curriculo">
+                <li class="espacamento">
+                    <label class="letra"><b>  @dado.Idioma3.Idioma: </b> </label>
+                    <label class="letra">
+                        @switch (dado.Idioma3.IdNivel)
+                        {
+                            case 1:
+                                <label class="letra"> Básico </label>
+                                break;
+
+                            case 2:
+                                <label class="letra"> Intermediário </label>
+                                break;
+
+                            case 3:
+                                <label class="letra"> Avançado </label>
+                                break;
+
+                            case 4:
+                                <label class="letra"> Fluente </label>
+                                break;
+                        }
+                    </label>
+                </li>
+            </ul>
+        }
+    }
+
+    <script>
+            function apagarDado(id) {
+                if (confirm('Tem certeza de que deseja apagar o currículo?'))
+                    location.href = '/Curriculo/Deletar?id=' + id;
+            }
+    </script>
+
+</div>
+
+    <br />
+    <br />
+    <br />
+
+}

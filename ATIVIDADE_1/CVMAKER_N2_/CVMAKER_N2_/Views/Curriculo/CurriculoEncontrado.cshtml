@@ -1,0 +1,212 @@
+﻿@model DadoViewModel
+
+@{ Layout = "_Layout";}
+
+
+<div class="divCustomizada">
+    <label class="idDoCurriculo">ID: @Model.Curriculo.Id</label> 
+    <br />
+    <br />
+    <div class="text-center">
+        <h1>@Model.Curriculo.Nome</h1>
+    </div>
+    <hr />
+    <label class="informacoes">
+        @Model.Curriculo.Idade anos | @Model.Endereco.Cidade - @Model.Endereco.Estado, @Model.Endereco.Bairro, @Model.Endereco.Rua |
+        @Model.Endereco.Cep | @Model.Curriculo.Telefone | @Model.Curriculo.Email | @Model.Curriculo.Cpf
+    </label>
+    <br />
+    <br />
+    <br />
+    <h3 class="h3Curriculo">Objetivo</h3>
+    <ul style="list-style-type:disc" class="h3Curriculo">
+        <li class="espacamento"><label class="letra">Atuar na área de @Model.Curriculo.Area. </label> </li>
+        <li class="espacamento"><label class="letra">@Model.Curriculo.Cargo. </label></li>
+    </ul>
+    <br />
+
+    <h3 class="h3Curriculo">Formação acadêmica</h3>
+
+    @if (Model.PosGraduacao.Instituicao != "NULL" && Model.PosGraduacao.Curso != "NULL")
+    {
+        <ul style="list-style-type:disc" class="h3Curriculo">
+            <li class="espacamento">
+                <label class="letra"><b>  @Model.PosGraduacao.Instituicao</b> </label> <br />
+                <label class="letra">
+                    @Model.PosGraduacao.Tipo em @Model.PosGraduacao.Curso | Início: @Model.PosGraduacao.Inicio.Month/@Model.PosGraduacao.Inicio.Year |
+                    Conclusão: @Model.PosGraduacao.Conclusao.Month/@Model.PosGraduacao.Conclusao.Year |
+                    @if (Model.PosGraduacao.Conclusao > DateTime.Now)
+                    {
+
+                        <label class="letra"> Turno: @Model.PosGraduacao.Turno | </label>
+                    }
+                    @if (Model.PosGraduacao.Periodo != 0)
+                    {
+                        <label class="letra"> Cursando: @Model.PosGraduacao.Periodo º período | </label>
+                    }
+
+                    @Model.PosGraduacao.Cidade - @Model.PosGraduacao.Uf
+
+                </label>
+            </li>
+        </ul>
+    }
+
+    @if (Model.Graduacao.Instituicao != "NULL" && Model.Graduacao.Curso != "NULL") // Se a pessoa fez ou faz faculdade
+    {
+        <ul style="list-style-type:disc" class="h3Curriculo">
+            <li class="espacamento">
+                <label class="letra"><b>  @Model.Graduacao.Instituicao</b> </label> <br />
+                <label class="letra">
+                    @Model.Graduacao.Tipo em @Model.Graduacao.Curso | Início: @Model.Graduacao.Inicio.Month/@Model.Graduacao.Inicio.Year |
+                    Conclusão: @Model.Graduacao.Conclusao.Month/@Model.Graduacao.Conclusao.Year |
+                    @if (Model.Graduacao.Conclusao > DateTime.Now) // Se a pessoa ainda não se formou, ela procura um estágio ou algo parecido. A empresa quer saber quando ela estuda.
+                    {
+
+                        <label class="letra"> Turno: @Model.Graduacao.Turno | </label>
+                    }
+                    @if (Model.Graduacao.Periodo != 0) // Colocar o período como zero significa que se formou. Se é diferente de zero, ainda não se formou. A empresa quer saber qual é o semestre.
+                    {
+                        <label class="letra"> Cursando: @Model.Graduacao.Periodo º período | </label>
+                    }
+
+                    @Model.Graduacao.Cidade - @Model.Graduacao.Uf
+
+                </label>
+            </li>
+        </ul>
+    }
+
+    @if (Model.Tecnico.Instituicao != "NULL" && Model.Tecnico.Curso != "NULL")
+    {
+        <ul style="list-style-type:disc" class="h3Curriculo">
+            <li class="espacamento">
+                <label class="letra"><b>  @Model.Tecnico.Instituicao</b> </label> <br />
+                <label class="letra">
+                    @Model.Tecnico.Curso | Início: @Model.Tecnico.Inicio.Month/@Model.Tecnico.Inicio.Year |
+                    Conclusão: @Model.Tecnico.Conclusao.Month/@Model.Tecnico.Conclusao.Year |
+                    @if (Model.Tecnico.Conclusao > DateTime.Now)
+                    {
+
+                        <label class="letra"> Turno: @Model.Tecnico.Turno | </label>
+                    }
+                    @if (Model.Tecnico.Periodo != 0)
+                    {
+                        <label class="letra"> Cursando: @Model.Tecnico.Periodo º período | </label>
+                    }
+
+                    @Model.Tecnico.Cidade - @Model.Tecnico.Uf
+
+                </label>
+            </li>
+        </ul>
+    }
+
+    @if (Model.Experiencia.NomeDaEmpresa != "NULL" && Model.Experiencia.Cargo != "NULL")
+    {
+        <h3 class="h3Curriculo">Experiência</h3>
+        <ul style="list-style-type:disc" class="h3Curriculo">
+            <li class="espacamento">
+                <label class="letra"><b>  @Model.Experiencia.NomeDaEmpresa</b> </label> <br />
+                <label class="letra">
+                    @Model.Experiencia.Cargo | Início: @Model.Experiencia.Inicio.Month/@Model.Experiencia.Inicio.Year
+                    | Fim: @Model.Experiencia.Fim.Month/@Model.Experiencia.Fim.Year
+                </label>
+            </li>
+        </ul>
+    }
+
+    @if (Model.Idioma1.Idioma != "NULL" || Model.Idioma2.Idioma != "NULL" || Model.Idioma3.Idioma != "NULL")
+    {
+        <h3 class="h3Curriculo">Idioma</h3>
+        if (Model.Idioma1.Idioma != "NULL" && Model.Idioma1.IdNivel != 0)
+        {
+            <ul style="list-style-type:disc" class="h3Curriculo">
+                <li class="espacamento">
+                    <label class="letra"><b>  @Model.Idioma1.Idioma: </b> </label>
+                    <label class="letra">
+                        @switch (Model.Idioma1.IdNivel)
+                        {
+                            case 1:
+                                <label class="letra"> Básico </label>
+                                break;
+
+                            case 2:
+                                <label class="letra"> Intermediário </label>
+                                break;
+
+                            case 3:
+                                <label class="letra"> Avançado </label>
+                                break;
+
+                            case 4:
+                                <label class="letra"> Fluente </label>
+                                break;
+                        }
+                    </label>
+                </li>
+            </ul>
+        }
+
+        if (Model.Idioma2.Idioma != "NULL" && Model.Idioma2.IdNivel != 0)
+        {
+            <ul style="list-style-type:disc" class="h3Curriculo">
+                <li class="espacamento">
+                    <label class="letra"><b>  @Model.Idioma2.Idioma: </b> </label>
+                    <label class="letra">
+                        @switch (Model.Idioma2.IdNivel)
+                        {
+                            case 1:
+                                <label class="letra"> Básico </label>
+                                break;
+
+                            case 2:
+                                <label class="letra"> Intermediário </label>
+                                break;
+
+                            case 3:
+                                <label class="letra"> Avançado </label>
+                                break;
+
+                            case 4:
+                                <label class="letra"> Fluente </label>
+                                break;
+                        }
+                    </label>
+                </li>
+            </ul>
+        }
+
+        if (Model.Idioma3.Idioma != "NULL" && Model.Idioma3.IdNivel != 0)
+        {
+            <ul style="list-style-type:disc" class="h3Curriculo">
+                <li class="espacamento">
+                    <label class="letra"><b>  @Model.Idioma3.Idioma: </b> </label>
+                    <label class="letra">
+                        @switch (Model.Idioma3.IdNivel)
+                        {
+                            case 1:
+                                <label class="letra"> Básico </label>
+                                break;
+
+                            case 2:
+                                <label class="letra"> Intermediário </label>
+                                break;
+
+                            case 3:
+                                <label class="letra"> Avançado </label>
+                                break;
+
+                            case 4:
+                                <label class="letra"> Fluente </label>
+                                break;
+                        }
+                    </label>
+                </li>
+            </ul>
+        }
+    }
+
+</div>
+
+

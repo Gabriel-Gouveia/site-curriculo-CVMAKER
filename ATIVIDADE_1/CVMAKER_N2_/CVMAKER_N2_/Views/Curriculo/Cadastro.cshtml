@@ -1,0 +1,392 @@
+﻿@model DadoViewModel
+@{
+    Layout = "_Layout";
+}
+
+<!Doctype html>
+<html>
+
+<head>
+    <title> CVMaker - Gerador de currículo </title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Gabriel Alves Gouveia 081190038 - Giovanni Monteiro Médici 081190005" />
+    <meta name="description" content="Website para o usuário cadastrar seu currículo e recebê-lo formatado." />
+    <meta name="keywords" content="cv, curriculum, profession" />
+    <link rel="stylesheet" type="text/css" href="~/css/StyleSheet.css" />
+    <link rel="bootstrap" type="text/css" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+    <link rel="bootstrap-grid" type="text/css" href="~/lib/bootstrap/dist/css/bootstrap-grid.css" />
+    <link rel="bootstrap-reboot" type="text/css" href="~/lib/bootstrap/dist/css/bootstrap-reboot.css" />
+</head>
+
+<body>
+
+    @*<button id="btnConsulta">Consultar registro</button>*@
+
+    <!--Alguns métodos que você vai criar no Controller precisam chamar o preparalistadeestados. (NovoCurriculo, salvar, edit...)-->
+        
+    <form name="formulário" asp-action="Salvar">
+        <input type="hidden" name="Operacao" value="@ViewBag.Operacao" />
+        <input type="hidden" name="Estados" value="@ViewBag.Estados" />
+        <input type="hidden" name="Turnos" value="@ViewBag.Turnos" />
+        <input type="hidden" name="TiposGraduacao" value="@ViewBag.TiposGraduacao" />
+        <input type="hidden" name="TiposPosGraduacao" value="@ViewBag.TiposPosGraduacao" />
+        <input type="hidden" name="Nives" value="@ViewBag.Niveis" />
+        <h2 class="h2Customizado row g-3">Dados gerais do currículo</h2>
+        <div class="row g-3">
+
+            <div class="col-md-4">
+                <label for="Curriculo.Nome" class="form-label">Nome: </label>
+                <input type="text" class="form-control" maxlength="50" name="Curriculo.Nome" value="@Model.Curriculo.Nome" required>
+                <span asp-validation-for="Curriculo.Nome" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-4">
+                <label for="Curriculo.Idade" class="form-label">Idade:</label>
+                <input type="number" class="form-control" name="Curriculo.Idade" value="@Model.Curriculo.Idade" required>
+                <span asp-validation-for="Curriculo.Idade" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-4">
+                <label for="Curriculo.Cpf" class="form-label">CPF: (exemplo: 123.456.789-09)</label>
+                <input type="text" class="form-control" maxlength="14" name="Curriculo.Cpf" value="@Model.Curriculo.Cpf" required>
+                <span asp-validation-for="Curriculo.Cpf" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-4">
+                <label for="Curriculo.Telefone" class="form-label">Telefone: </label>
+                <input type="text" class="form-control" maxlength="14" name="Curriculo.Telefone" value="@Model.Curriculo.Telefone" required>
+                <span asp-validation-for="Curriculo.Telefone" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-4">
+                <label for="Curriculo.Email" class="form-label">Email: </label>
+                <input type="text" class="form-control" maxlength="50" name="Curriculo.Email" value="@Model.Curriculo.Email" required>
+                <span asp-validation-for="Curriculo.Email" class="text-danger"></span>
+            </div>
+
+        </div>
+        <br />
+        <br />
+        <br />
+
+        <h2 class="h2Customizado row g-3">Seu cargo pretendido</h2>
+        <div class="row g-3">
+            <div class="col-md-4">
+                <label for="Curriculo.Area" class="form-label">Área: (exemplo: Administração)</label>
+                <input type="text" class="form-control" maxlength="20" name="Curriculo.Area" value="@Model.Curriculo.Area" required>
+                <span asp-validation-for="Curriculo.Area" class="text-danger"></span>
+            </div>
+            <div class="col-md-4">
+                <label for="Curriculo.Cargo" class="form-label">Cargo: </label>
+                <input type="text" class="form-control" maxlength="50" name="Curriculo.Cargo" value="@Model.Curriculo.Cargo" required>
+                <span asp-validation-for="Curriculo.Cargo" class="text-danger"></span>
+            </div>
+        </div>
+
+        <br />
+        <br />
+        <br />
+        <h2 class="h2Customizado row g-3">Endereço</h2>
+        <div class="row g-3">
+            <div class="col-md-4">
+
+                <label for="UF" class="form-label">Estado: </label>
+                <br />
+                <select class="form-control" asp-for="Endereco.Estado" asp-items="ViewBag.Estados" value="@Model.Endereco.Estado">
+                    <!-- Essas tag helpers já inserem o estado na Model.-->
+                    <!--Alguns métodos que você vai criar no Controller precisam chamar o preparalistadeestados. (NovoCurriculo, salvar, edit...)-->
+                </select>
+
+            </div>
+            <div class="col-md-4">
+                <label for="endereco.Cidade" class="form-label">Cidade: </label>
+                <input type="text" class="form-control" maxlength="50" name="Endereco.Cidade" value="@Model.Endereco.Cidade" />
+                <span asp-validation-for="Endereco.Cidade" class="text-danger"></span>
+            </div>
+            <div class="col-md-4">
+                <label for="endereco.Bairro" class="form-label">Bairro: </label>
+                <input type="text" class="form-control" maxlength="50" name="Endereco.Bairro" value="@Model.Endereco.Bairro" />
+                <span asp-validation-for="Endereco.Bairro" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row g-3">
+            <div class="col-md-4">
+                <label for="Endereco.Rua" class="form-label">Rua: </label>
+                <input type="text" class="form-control" maxlength="50" name="Endereco.Rua" value="@Model.Endereco.Rua" />
+                <span asp-validation-for="Endereco.Rua" class="text-danger"></span>
+            </div>
+            <div class="col-md-4">
+                <label for="Endereco.Cep" class="form-label">CEP: </label>
+                <input type="text" class="form-control" maxlength="9" name="Endereco.Cep" value="@Model.Endereco.Cep" />
+                <span asp-validation-for="Endereco.Cep" class="text-danger"></span>
+            </div>
+        </div>
+
+        <br />
+        <br />
+        <br />
+        <h2 class="h2Customizado row g-3">Experiências</h2>
+        <div class="row g-3">
+            <div class="col-md-4">
+                <label for="Experiencia.NomeDaEmpresa" class="form-label">Nome da empresa: </label>
+                <input type="text" class="form-control" maxlength="50" name="Experiencia.NomeDaEmpresa" value="@Model.Experiencia.NomeDaEmpresa" />
+            </div>
+            <div class="col-md-4">
+                <label for="Experiencia.Cargo" class="form-label">Cargo: </label>
+                <input type="text" class="form-control" maxlength="50" name="Experiencia.Cargo" value="@Model.Experiencia.Cargo" />
+            </div>
+            <div class="col-md-4">
+                <label for="Experiencia.Inicio" class="form-label">Data de início: </label>
+                <input type="date" class="form-control" name="Experiencia.Inicio" value="@Model.Experiencia.Inicio;" />
+            </div>
+            <div class="col-md-4">
+                <label for="Experiencia.Fim" class="form-label">Data de saída: </label>
+                <input type="date" class="form-control" name="Experiencia.Fim" value="@Model.Experiencia.Fim" />
+            </div>
+
+
+        </div>
+        <br />
+        <br />
+        <br />
+        <h2 class="h2Customizado row g-3">Formações</h2>
+
+
+        <h5 class="h5Customizado">Graduação:</h5>
+        <div class="row g-3">
+
+            <div class="col-md-4">
+
+                <label for="Graduacao.Tipo" class="form-label">Tipo de graduação: </label>
+                <br />
+                <select asp-for="Graduacao.Tipo" asp-items="ViewBag.TiposGraduacao" class="form-control">
+                </select>
+            </div>
+
+            <div class="col-md-4">
+
+                <label for="Graduacao.Curso" class="form-label">Nome do curso: </label>
+                <input type="text" class="form-control" maxlength="50" name="Graduacao.Curso" value="@Model.Graduacao.Curso" />
+            </div>
+
+        </div>
+
+        <div class="row g-3">
+            <div class="col-md-4">
+                <label for="Graduacao.Instituicao" class="form-label">Instituição: </label>
+                <input type="text" class="form-control" maxlength="50" name="Graduacao.Instituicao" value="@Model.Graduacao.Instituicao" />
+            </div>
+            <div class="col-md-4">
+                <label for="Graduacao.Inicio" class="form-label">Data de início: </label>
+                <input type="date" class="form-control" name="Graduacao.Inicio" value="@Model.Graduacao.Inicio" />
+            </div>
+            <div class="col-md-4">
+                <label for="Graduacao.Conclusao" class="form-label">Data de conclusão: </label>
+                <input type="date" class="form-control" name="Graduacao.Conclusao" value="@Model.Graduacao.Conclusao" />
+            </div>
+        </div>
+
+        <div class="row g-3">
+            <div class="col-md-4">
+                <label for="Graduacao.Cidade" class="form-label">Cidade da instituição: </label>
+                <input type="text" class="form-control" maxlength="40" name="Graduacao.Cidade" value="@Model.Graduacao.Cidade" />
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">UF: </label>
+                <select class="form-control" asp-for="Graduacao.Uf" asp-items="ViewBag.Estados" value="@Model.Graduacao.Uf">
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Turno: </label>
+                <select class="form-control" asp-for="Graduacao.Turno" asp-items="ViewBag.Turnos" value="@Model.Graduacao.Turno">
+                </select>
+            </div> <br />
+        </div>
+
+        <div class="row g-3">
+            <div class="col-md-4">
+                <label for="Graduacao.Periodo" class="form-label">Período: </label>
+                <input type="number" class="form-control" min="0" max="10" name="Graduacao.Periodo" value="@Model.Graduacao.Periodo" />
+            </div>
+        </div>
+
+        <br />
+        <br />
+
+
+
+        <h5 class="h5Customizado">Pós-Graduação:</h5>
+        <div class="row g-3">
+
+            <div class="col-md-4">
+
+                <label class="form-label">Tipo de pós-graduação: </label>
+                <br />
+                <select asp-for="PosGraduacao.Tipo" asp-items="ViewBag.TiposPosGraduacao" class="form-control">
+                </select>
+            </div>
+
+            <div class="col-md-4">
+
+                <label for="PosGraduacao.Curso" class="form-label">Nome do curso: </label>
+                <input type="text" class="form-control" maxlength="50" name="PosGraduacao.Curso" value="@Model.PosGraduacao.Curso" />
+            </div>
+
+        </div>
+
+        <div class="row g-3">
+            <div class="col-md-4">
+                <label for="PosGraduacao.Instituicao" class="form-label">Instituição: </label>
+                <input type="text" class="form-control" maxlength="50" name="PosGraduacao.Instituicao" value="@Model.PosGraduacao.Instituicao" />
+            </div>
+            <div class="col-md-4">
+                <label for="PosGraduacao.Inicio" class="form-label">Data de início: </label>
+                <input type="date" class="form-control" name="PosGraduacao.Inicio" value="@Model.PosGraduacao.Inicio" />
+            </div>
+            <div class="col-md-4">
+                <label for="PosGraduacao.Conclusao" class="form-label">Data de conclusão: </label>
+                <input type="date" class="form-control" name="PosGraduacao.Conclusao" value="@Model.PosGraduacao.Conclusao" />
+            </div>
+        </div>
+
+        <div class="row g-3">
+            <div class="col-md-4">
+                <label for="PosGraduacao.Cidade" class="form-label">Cidade da instituição: </label>
+                <input type="text" class="form-control" maxlength="40" name="PosGraduacao.Cidade" value="@Model.PosGraduacao.Cidade" />
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">UF: </label>
+                <select class="form-control" asp-for="PosGraduacao.Uf" asp-items="ViewBag.Estados" value="@Model.PosGraduacao.Uf">
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Turno: </label>
+                <select class="form-control" asp-for="PosGraduacao.Turno" asp-items="ViewBag.Turnos" value="@Model.PosGraduacao.Turno">
+                </select>
+            </div> <br />
+        </div>
+
+        <div class="row g-3">
+            <div class="col-md-4">
+                <label for="PosGraduacao.Periodo" class="form-label">Período: </label>
+                <input type="number" class="form-control" min="0" max="10" name="PosGraduacao.Periodo" value="@Model.PosGraduacao.Periodo" />
+            </div>
+        </div>
+
+
+
+        <br />
+        <br />
+
+        <h5 class="h5Customizado">Curso técnico:</h5>
+        <div class="row g-3">
+
+            <div class="col-md-4">
+
+                <label for="Tecnico.Curso" class="form-label">Nome do curso: </label>
+                <input type="text" class="form-control" maxlength="50" name="Tecnico.Curso" value="@Model.Tecnico.Curso" />
+            </div>
+
+        </div>
+
+        <div class="row g-3">
+            <div class="col-md-4">
+                <label for="Tecnico.Instituicao" class="form-label">Instituição: </label>
+                <input type="text" class="form-control" maxlength="50" name="Tecnico.Instituicao" value="@Model.Tecnico.Instituicao" />
+            </div>
+            <div class="col-md-4">
+                <label for="Tecnico.Inicio" class="form-label">Data de início: </label>
+                <input type="date" class="form-control" name="Tecnico.Inicio" value="@Model.Tecnico.Inicio" />
+            </div>
+            <div class="col-md-4">
+                <label for="Tecnico.Conclusao" class="form-label">Data de conclusão: </label>
+                <input type="date" class="form-control" name="Tecnico.Conclusao" value="@Model.Tecnico.Conclusao" />
+            </div>
+        </div>
+
+        <div class="row g-3">
+            <div class="col-md-4">
+                <label for="Tecnico.Cidade" class="form-label">Cidade da instituição: </label>
+                <input type="text" class="form-control" maxlength="40" name="Tecnico.Cidade" value="@Model.Tecnico.Cidade" />
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">UF: </label>
+                <select class="form-control" asp-for="Tecnico.Uf" asp-items="ViewBag.Estados" value="@Model.Tecnico.Uf">
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Turno: </label>
+                <select class="form-control" asp-for="Tecnico.Turno" asp-items="ViewBag.Turnos" value="@Model.Tecnico.Turno">
+                </select>
+            </div> <br />
+        </div>
+
+        <div class="row g-3">
+            <div class="col-md-4">
+                <label for="Tecnico.Periodo" class="form-label">Período: </label>
+                <input type="number" class="form-control" min="0" max="10" name="Tecnico.Periodo" value="@Model.Tecnico.Periodo" />
+            </div>
+        </div>
+
+
+
+        <br />
+        <br />
+
+        <br />
+        <h2 class="h2Customizado row g-3">Idiomas</h2>
+        <div id="idioma0" class="row g-3">
+            <div class="col-md-4">
+                <label for="Idioma1.Idioma" class="form-label">Idioma: </label>
+                <input type="text" class="form-control" name="Idioma1.Idioma" maxlength="20" value="@Model.Idioma1.Idioma" />
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Nível: </label>
+                <br />
+                <select class="form-control" asp-for="Idioma1.IdNivel" asp-items="ViewBag.Niveis" value="@Model.Idioma1.IdNivel">
+                </select>
+            </div>
+
+        </div>
+
+        <div class="row g-3">
+            <div class="col-md-4">
+                <label for="Idioma2.Idioma" class="form-label">Segundo idioma: </label>
+                <input type="text" class="form-control" name="idioma2.Idioma" maxlength="20" value="@Model.Idioma2.Idioma" />
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Nível: </label>
+                <br />
+                <select class="form-control" asp-for="Idioma2.IdNivel" asp-items="ViewBag.Niveis" value="@Model.Idioma2.IdNivel">
+                </select>
+            </div>
+        </div>
+
+
+        <div class="row g-3">
+            <div class="col-md-4">
+                <label for="Idioma3.Idioma" class="form-label">Terceiro idioma: </label>
+                <input type="text" class="form-control" name="idioma3.Idioma" maxlength="20" value="@Model.Idioma3.Idioma" />
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Nível: </label>
+                <br />
+                <select class="form-control" asp-for="Idioma3.IdNivel" asp-items="ViewBag.Niveis" value="@Model.Idioma3.IdNivel">
+                </select>
+            </div>
+        </div>
+        <br />
+        <br />
+
+        <div class="col-12">
+            <!--<button class="btn btn-primary" id="btnSalvar" type="submit" name="enviar">Salvar dados</button>-->
+            <input type="submit" class="btn btn-info" value="Enviar" />
+            <br />
+            <br />
+            <br />
+        </div>
+    </form>   
+</body>
+
+</html>
